@@ -1,0 +1,15 @@
+[General]
+Area: 1481412 415_sahalin
+Project: 1481418 415
+Schema: 1481420 413
+Geometry: 1491442 ModelScope_1
+Geometry resolution: (5, 5, 3001)
+Geometry cell size: (1.0, 1.0, 1.0)
+Grid edge: (0, 0, 0)
+Well: 1481421 415
+Altitude: 0.0
+[Transformation]
+o: (5867749.749865853, 667914.0998655952, 0.0)
+u: (-1.000002572312951, 5.627982318401337E-5, 0.0)
+v: (-2.5723129510879517E-6, -0.999943720176816, 0.0)
+w: (0.0, 0.0, 1.0)
