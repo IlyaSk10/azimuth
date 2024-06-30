@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="55eb3e01-e563-47df-8dc5-6d5466be8081" name="Default Changelist" comment="" />
+    <list default="true" id="55eb3e01-e563-47df-8dc5-6d5466be8081" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +16,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="2i8Hg4QUpNYdJeLXL6zW3Bia6U5" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -33,7 +39,7 @@
       <recent name="C:\Users\ias\PycharmProjects\azimuth" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.azimuth_v.3">
+  <component name="RunManager" selected="Python.spectrum">
     <configuration name="azimuth" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="azimuth" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -97,8 +103,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="spectrum" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="azimuth" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/spectrum.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.spectrum" />
         <item itemvalue="Python.azimuth_v.3" />
         <item itemvalue="Python.azimuth2" />
         <item itemvalue="Python.azimuth" />
@@ -123,46 +151,46 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1719219917643" />
-    <state width="1899" height="263" key="GridCell.Tab.0.bottom" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.0.bottom" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.0.center" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.0.center" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.0.left" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.0.left" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.0.right" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.0.right" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.1.bottom" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.1.bottom" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.1.center" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.1.center" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.1.left" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.1.left" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
-    <state width="1899" height="263" key="GridCell.Tab.1.right" timestamp="1719509919472">
+    <state width="1899" height="242" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
+    <state width="1899" height="242" key="GridCell.Tab.1.right" timestamp="1719673626391">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="263" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1719509919472" />
+    <state width="1899" height="242" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1719673626391" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1719473417471">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="461" y="162" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1719473417471" />
-    <state x="656" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1719469197477">
+    <state x="554" y="361" key="com.intellij.ide.util.TipDialog" timestamp="1719762102728">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1719469197477" />
+    <state x="554" y="361" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1719762102728" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -196,6 +224,11 @@
           <url>file://$PROJECT_DIR$/azimuth_v.3.py</url>
           <line>110</line>
           <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/spectrum.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
