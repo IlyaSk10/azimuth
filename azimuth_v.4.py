@@ -206,6 +206,7 @@ xcenter, ycenter = 0, 0
 domainX, domainY, domainZ = np.array([0]), np.array([0]), np.array([0])
 submodelname = 'mod_' + str(depth_ind) + '_P'
 
+
 Gtp_total = np.transpose(Gtp_total, (1, 4, 3, 2, 0))
 data_final = []
 for i in range(len(sensors)):
