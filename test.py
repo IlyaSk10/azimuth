@@ -1,2 +1,1 @@
-import numpy
-ррррррррррррррррр
+import numpy # pkg
