@@ -24,7 +24,8 @@ files = glob.glob('**',recursive = True)    #get files list
 
 file_sensors = np.loadtxt("sensors.txt")
 
-text = '''C1	Client: 
+text = '''
+C1	Client: 
 C2	Area: Piltun-Astokhskoye
 C3	Well: 
 C4	
@@ -65,6 +66,7 @@ C38
 C39	Segy rev 1
 C40	END TEXTUAL HEADER
 '''
+
 
 
 # + endofcell="--"
@@ -109,7 +111,7 @@ for submodel in submodels_name[:1]:
 
     model_centralZ = f[submodel]['central_Z'][:].item()
     model_field = f[submodel]['field'][:]
-    model_sensors = f[submodel]['sensors'][:]
+    model_sensors = f[submodel]['sensors'][:][:2]
 
     data = np.zeros((len(model_sensors), 12, 6, L))  # shape (sensors,12,6,L)
 
@@ -135,6 +137,7 @@ for submodel in submodels_name[:1]:
             for comp in range(6):
 
                 stream.stats = AttribDict()
+                stream.stats.textual_file_header = text
                 stream.stats.binary_file_header = SEGYBinaryFileHeader()
                 stream.stats.binary_file_header.job_identification_number = well
                 stream.stats.binary_file_header.line_number = well
@@ -150,7 +153,7 @@ for submodel in submodels_name[:1]:
                 stream.stats.binary_file_header.fixed_length_trace_flag =1 
                 stream.stats.binary_file_header.number_of_samples_per_data_trace = L
                 stream.stats.binary_file_header.seg_y_format_revision_number = 0x0100
-                stream.stats.binary_file_header.textual_file_header = text #"Segy file contains 6 traces (6 tenzor components) ['xx', 'yy', 'zz', 'xy', 'xz', 'yz'], sampling_rate=3000 Hz"
+                #stream.stats.binary_file_header.textual_file_header = "kkkkk"#"Segy file contains 6 traces (6 tenzor components) ['xx', 'yy', 'zz', 'xy', 'xz', 'yz'], sampling_rate=3000 Hz"
 
                 # if not hasattr(trace.stats, 'stream.trace_header'):
 
@@ -186,9 +189,8 @@ for submodel in submodels_name[:1]:
 # -
 # --
 
-binary_header.textual_file_header
-
-binary_header
+# +
+#binary_header
 
 # +
 # read SEGY
