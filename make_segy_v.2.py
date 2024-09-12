@@ -22,22 +22,53 @@ fields=pkg.fields
 
 files = glob.glob('**',recursive = True)    #get files list
 
-# +
-# https://github.com/obspy/obspy/blob/master/obspy/io/segy/header.py
-
 file_sensors = np.loadtxt("sensors.txt")
-# -
 
-model_centralZ=f[submodel]['central_Z'][:].item()
-model_field=f[submodel]['field'][:]
-model_sensors=f[submodel]['sensors'][:]
-print(submodel,model_centralZ)
+text = '''C1	Client: 
+C2	Area: Piltun-Astokhskoye
+C3	Well: 
+C4	
+C5	Name: 5001001_vp Type: 1D model, view point     
+C6	Trace sample format: IBM Float (32 bit) 
+C7	
+C8	CRS: WGS 84 / UTM zone 54N
+C9	
+C10	TVD Reference Datum: Drill Floor
+C11	TVD Reference Elevation: 63.700 m above MSL
+C12	Seabed / Ground Elevation: 31.280 m below MSL
+C13	
+C14	Coordinate scale factor: 100.0                                              
+C15	Elevations & depths scale factor: 100.0  
+C16	
+C17	Trace header locations:
+C18	
+C19	Receiver group elevation: bytes 41-44
+C20	Surface elevation at source: bytes 45-48
+C21	
+C22	частота дискретизации 3000 ГЦ
+C23	описание каналов
+C24	
+C25	
+C26	
+C27	
+C28	
+C29	
+C30	
+C31	
+C32	
+C33	
+C34	
+C35	
+C36	
+C37	
+C38	
+C39	Segy rev 1
+C40	END TEXTUAL HEADER
+'''
 
-model_sensors
 
-np.argwhere(model_sensors==1000)
-
-# +
+# + endofcell="--"
+# # +
 # START
 from obspy import read, Trace, Stream, UTCDateTime
 from obspy.core import AttribDict, Stats
@@ -47,6 +78,7 @@ import numpy as np
 import sys
 import h5py
 
+well=415
 dir_name = '415_P'
 
 fpaths = [i for i in files if 'files/' in i]
@@ -65,7 +97,7 @@ except FileExistsError:
 
 submodels_name = sorted([line for line in sorted(f.keys()) if '_P' in line])
 
-for submodel in submodels_name:
+for submodel in submodels_name[:1]:
 
     print(submodel)
 
@@ -104,9 +136,21 @@ for submodel in submodels_name:
 
                 stream.stats = AttribDict()
                 stream.stats.binary_file_header = SEGYBinaryFileHeader()
+                stream.stats.binary_file_header.job_identification_number = well
+                stream.stats.binary_file_header.line_number = well
+                stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0
+                stream.stats.binary_file_header.data_sample_format_code = 1 
+                stream.stats.binary_file_header.trace_sorting_code = 1
+                stream.stats.binary_file_header.vertical_sum_code = 0
+                stream.stats.binary_file_header.correlated_data_traces = 1
+                stream.stats.binary_file_header.binary_gain_recovered = 2
+                stream.stats.binary_file_header.amplitude_recovery_method = 1
+                stream.stats.binary_file_header.measurement_system = 1
+                stream.stats.binary_file_header.impulse_signal_polarity = 0
+                stream.stats.binary_file_header.fixed_length_trace_flag =1 
                 stream.stats.binary_file_header.number_of_samples_per_data_trace = L
                 stream.stats.binary_file_header.seg_y_format_revision_number = 0x0100
-                stream.stats.textual_file_header = "Segy file contains 6 traces (6 tenzor components) ['xx', 'yy', 'zz', 'xy', 'xz', 'yz'], sampling_rate=3000"
+                stream.stats.binary_file_header.textual_file_header = text #"Segy file contains 6 traces (6 tenzor components) ['xx', 'yy', 'zz', 'xy', 'xz', 'yz'], sampling_rate=3000 Hz"
 
                 # if not hasattr(trace.stats, 'stream.trace_header'):
 
@@ -138,49 +182,14 @@ for submodel in submodels_name:
 
             path_to_segy = dir_name + '/' + submodel + '/' + 'sensor_num_' + str(int(sens)) + '/' + 'sensor_num_' + str(
                 int(sens)) + '_source_num_' + str(p) + '.segy'
-            stream.write(path_to_segy, format="segy", data_encoding=5)
+            stream.write(path_to_segy, format="segy") # , data_encoding=5
 # -
-
-np.arange(10,100,8)
-
-import shutil
-shutil.make_archive("415_P", 'zip', '415_P')
-
-len(submodels_name)
-
-# + endofcell="--"
-# read SEGY
-from obspy.io.segy.segy import _read_segy
-
-segy_file_path = path_to_segy
-print(segy_file_path)
-
-segy_file = _read_segy(segy_file_path)
-binary_header = segy_file.binary_file_header
-format_version = binary_header.seg_y_format_revision_number
-
-print(binary_header.seg_y_format_revision_number,binary_header.number_of_samples_per_data_trace)
-
-if format_version == 256:
-     print("SEGY Format Version: 1.0")
-else:
-     print(f"SEGY Format Version: {format_version / 256:.1f}")
-
-segy_file.textual_file_header.decode()
-# -
-
-for i, trace in enumerate(segy_file.traces):
-     trace_header = trace.header
-     #print(trace_header)
-
-plt.plot(segy_file.traces[0].data)
-plt.plot(segy_file.traces[4].data)
-
-print(trace_header.trace_sequence_number_within_line)
-#print(segy_file.traces[0].sampling_rate)
-print(trace_header.receiver_group_elevation)
 # --
 
+binary_header.textual_file_header
+
+binary_header
+
 # +
 # read SEGY
 from obspy.io.segy.segy import _read_segy
@@ -192,26 +201,10 @@ segy_file = _read_segy(segy_file_path)
 binary_header = segy_file.binary_file_header
 format_version = binary_header.seg_y_format_revision_number
 
-print(binary_header.seg_y_format_revision_number,binary_header.number_of_samples_per_data_trace)
-
-if format_version == 256:
-     print("SEGY Format Version: 1.0")
-else:
-     print(f"SEGY Format Version: {format_version / 256:.1f}")
+print(binary_header.seg_y_format_revision_number,binary_header.number_of_samples_per_data_trace,binary_header.job_identification_number)
+# -
 
 segy_file.textual_file_header.decode()
-
-# +
-for i, trace in enumerate(segy_file.traces):
-     trace_header = trace.header
-     #print(trace_header)
-
-plt.plot(segy_file.traces[0].data)
-
-print(trace_header.trace_sequence_number_within_line)
-#print(trace_header.delta)
-print(trace_header.receiver_group_elevation)
-# -
 
 #fpaths = [i for i in files if fnmatch.fnmatch(i, '*'+extention)] #get file (main data container)
 fpaths = [i for i in files if 'files/' in i] 
