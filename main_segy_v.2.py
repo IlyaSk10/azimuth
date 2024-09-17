@@ -14,73 +14,29 @@ from BachataClass import *
 from base_func import *
 import pickle
 import shutil
-
 # Load everything from input package:
-globals().update(job.load())  # load variables from input package
-globals().update(job.params())  # load parameters from input package
-pkg = job.packages()[0]
-fields = pkg.fields
+globals().update(job.load())    #load variables from input package
+globals().update(job.params())  #load parameters from input package
+pkg=job.packages()[0]
+fields=pkg.fields
 
-files = glob.glob('**', recursive=True)  # get files list
+files = glob.glob('**',recursive = True)    #get files list
 
-file_sensors = np.loadtxt("sensors 415.txt")
-
-text = f'''
-C1 Client: 
-C2 Area: Piltun-Astokhskoye
-C3 Well: {well}
-C4
-C5
-C6 Trace sample format IBM Float (32 bit) 
-C7
-C8 CRS: WGS 84 / UTM zone 54N
-C9
-C10	TVD Reference Datum: Drill Floor
-C11	TVD Reference Elevation: 63.700 m above MSL
-C12	Seabed / Ground Elevation: 31.280 m below MSL
-C13
-C14	Coordinate scale factor: 100.0                                          
-C15	Elevations & depths scale factor: 100.0
-C16
-C17 Trace header locations:
-C18
-C19	Receiver group elevation: bytes 41-44
-C20	Surface elevation at source: bytes 45-48
-C21
-C22	Sampling_rate - fd=3000Hz, sample_interval = 1/fd (seconds)
-C23	Segy file contains 6 traces (6 power components) ['xx', 'yy', 'zz', 'xy', 'xz', 'yz']
-C24
-C25
-C26
-C27
-C28
-C29
-C30 11
-C31
-C32
-C33
-C34
-C35
-C36
-C37
-C38
-C39 Segy rev 1
-C40 END TEXTUAL HEADER
-'''
+file_sensors = np.loadtxt("sensors 413.txt")
 
 
 def get_txt_header(well):
     t = [None] * 40
-    t[0] = f"C 1"
-    t[1] = f"C 2 Area: Piltun-Astokhskoye"
-    t[2] = f"C 3 Well: {well}"
-    t[3] = f"C 4"
-    t[4] = f"C 5"
-    t[5] = f"C 6"
-    t[6] = f"C 7"
-    t[7] = f"C 8 CRS: WGS 84 / UTM zone 54N"
-    t[8] = f"C 9"
-    t[9] = f"C10"
+    t[ 0] = f"C 1"
+    t[ 1] = f"C 2 Area: Piltun-Astokhskoye"
+    t[ 2] = f"C 3 Well: {well}"
+    t[ 3] = f"C 4"
+    t[ 4] = f"C 5"
+    t[ 5] = f"C 6"
+    t[ 6] = f"C 7"
+    t[ 7] = f"C 8 CRS: WGS 84 / UTM zone 54N"
+    t[ 8] = f"C 9"
+    t[ 9] = f"C10"
     t[10] = f"C11 TVD Reference Elevation: 63.700 m above MSL"
     t[11] = f"C12 Seabed / Ground Elevation: 31.280 m below MSL"
     t[12] = f"C13"
@@ -126,10 +82,10 @@ import numpy as np
 import sys
 import h5py
 
-well = 415
-dir_name = '415_P'
+well=413
+dir_name = '413_S'
 
-dist_sr = np.arange(10, 100, 8)
+dist_sr = np.arange(10,100,8)
 
 fpaths = [i for i in files if 'files/' in i]
 
@@ -145,21 +101,20 @@ try:
 except FileExistsError:
     print("dir already exists")
 
-submodels_name = sorted([line for line in sorted(f.keys()) if '_P' in line])
+submodels_name = sorted([line for line in sorted(f.keys()) if '_S' in line])
 
-for submodel in submodels_name[:1]:
+for submodel in submodels_name: # exclude
 
     print(submodel)
 
     try:
         os.mkdir(dir_name + '/' + submodel)
     except FileExistsError:
-        # print("folder already exists")
         pass
 
-    model_centralZ = f[submodel]['central_Z'][:].item()
-    model_field = f[submodel]['field'][:]
-    model_sensors = f[submodel]['sensors'][:][:2]
+    #model_centralZ = f[submodel]['central_Z'][:].item()
+    #model_field = f[submodel]['field'][:]
+    model_sensors = f[submodel]['sensors'][:] # exclude
 
     data = np.zeros((len(model_sensors), 12, 6, L))  # shape (sensors,12,6,L)
 
@@ -175,7 +130,6 @@ for submodel in submodels_name[:1]:
         try:
             os.mkdir(dir_name + '/' + submodel + '/' + 'sensor_num_' + str(int(sens)))
         except FileExistsError:
-            # print("folder already exists")
             pass
 
         for p in range(12):
@@ -191,7 +145,7 @@ for submodel in submodels_name[:1]:
                 stream.stats.binary_file_header.line_number = well
                 stream.stats.binary_file_header.reel_number = 0
                 stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0
-                stream.stats.binary_file_header.data_sample_format_code = 5  # 1
+                stream.stats.binary_file_header.data_sample_format_code = 1 #5
                 stream.stats.binary_file_header.trace_sorting_code = 1
                 stream.stats.binary_file_header.vertical_sum_code = 0
                 stream.stats.binary_file_header.correlated_data_traces = 1
@@ -199,19 +153,12 @@ for submodel in submodels_name[:1]:
                 stream.stats.binary_file_header.amplitude_recovery_method = 1
                 stream.stats.binary_file_header.measurement_system = 1
                 stream.stats.binary_file_header.impulse_signal_polarity = 0
-                stream.stats.binary_file_header.fixed_length_trace_flag = 1
+                stream.stats.binary_file_header.fixed_length_trace_flag = 1 
                 stream.stats.binary_file_header.number_of_samples_per_data_trace = L
                 stream.stats.binary_file_header.seg_y_format_revision_number = 0x0100
                 stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0
                 stream.stats.binary_file_header.ensemble_fold = 0
 
-                # if not hasattr(trace.stats, 'stream.trace_header'):
-
-                # trace.stats.segy.trace_header = SEGYTraceHeader()
-                # trace_header = SEGYTraceHeader()
-                # trace_header.sampling_rate = float(fd)
-                # trace.stats.sampling_rate = 0
-                # trace.receiver_group_elevation=file_sensors[np.argwhere(file_sensors[:,0]==sens).item()][2]
                 trace = Trace(data[s, p, comp, :])
                 trace.stats = Stats()
 
@@ -219,21 +166,15 @@ for submodel in submodels_name[:1]:
                     trace.stats.segy = {}
                 h = SEGYTraceHeader()
 
-                # trace.stats.sampling_rate = float(fd)
                 trace.stats.delta = 0.01
 
-                # trace.receiver_group_elevation=11#file_sensors[np.argwhere(file_sensors[:,0]==sens).item()][2]
-                # trace = SEGYTrace(header=trace_header, data=data[s,p,comp,:])
-                # textual_header = SEGYTextualFileHeader()
-                # h.trace_sequence_number_within_line = 111
-                # h.receiver_group_elevation=file_sensors[np.argwhere(file_sensors[:,0]==sens).item()][2]
-                h.trace_sequence_number_within_line = comp + 1
-                h.trace_sequence_number_within_segy_file = comp + 1
+                h.trace_sequence_number_within_line = comp+1
+                h.trace_sequence_number_within_segy_file = comp+1
                 h.original_field_record_number = 1
-                h.trace_number_within_the_original_field_record = comp + 1
-                h.receiver_group_elevation = int(file_sensors[int(sens) - 1, 1])
-                h.surface_elevation_at_source = int(file_sensors[int(sens) - 1, 1])
-                h.trace_sequence_number_within_segy_file = comp
+                h.trace_number_within_the_original_field_record = comp+1
+                h.receiver_group_elevation = int(file_sensors[int(sens)-1,1])
+                h.surface_elevation_at_source = int(file_sensors[int(sens)-1,1])
+                h.trace_sequence_number_within_segy_file = comp+1
                 h.trace_identification_code = 1
                 h.data_use = 1
                 h.source_depth_below_surface = 0
@@ -243,10 +184,10 @@ for submodel in submodels_name[:1]:
                 h.datum_elevation_at_receiver_group = 6370
                 h.datum_elevation_at_source = 6370
                 h.scalar_to_be_applied_to_all_elevations_and_depths = -100
-                h.source_coordinate_x = int(file_sensors[int(sens) - 1, 2] * 100)  # longtitude *100
-                h.source_coordinate_y = int(file_sensors[int(sens) - 1, 3] * 100)
-                h.group_coordinate_x = int(file_sensors[int(sens) - 1, 2] * 100)
-                h.group_coordinate_y = int(file_sensors[int(sens) - 1, 3] * 100)
+                h.source_coordinate_x = int(file_sensors[int(sens)-1,2]*100) # longtitude *100 
+                h.source_coordinate_y = int(file_sensors[int(sens)-1,3]*100)
+                h.group_coordinate_x = int(file_sensors[int(sens)-1,2]*100)
+                h.group_coordinate_y = int(file_sensors[int(sens)-1,3]*100)
                 h.coordinate_units = 1
                 h.delay_recording_time = 0
                 h.number_of_samples_in_this_trace = L
@@ -261,85 +202,66 @@ for submodel in submodels_name[:1]:
 
             path_to_segy = dir_name + '/' + submodel + '/' + 'sensor_num_' + str(int(sens)) + '/' + 'sensor_num_' + str(
                 int(sens)) + '_source_num_' + str(p) + '.segy'
-            stream.write(path_to_segy, format="SEGY", data_encoding=5)  # , data_encoding=5
-
-# +
-# read SEGY
-from obspy.io.segy.segy import _read_segy
-
-segy_file_path = path_to_segy
-print(segy_file_path)
-
-segy_file = _read_segy(segy_file_path)
-binary_header = segy_file.binary_file_header
-format_version = binary_header.seg_y_format_revision_number
+            stream.write(path_to_segy, format="SEGY") # , data_encoding=5
 # -
 
-print(binary_header.seg_y_format_revision_number, binary_header.number_of_samples_per_data_trace,
-      binary_header.job_identification_number)
+import shutil
+shutil.make_archive('413_S', 'zip', '413_S')
 
-binary_header
-
-segy_file.traces[3].header
-
-# fpaths = [i for i in files if fnmatch.fnmatch(i, '*'+extention)] #get file (main data container)
-fpaths = [i for i in files if 'files/' in i]
+#fpaths = [i for i in files if fnmatch.fnmatch(i, '*'+extention)] #get file (main data container)
+fpaths = [i for i in files if 'files/' in i] 
 bachata_obj = BachataClass(fpaths[0])
 fmin = bachata_obj.fmin
 fmax = bachata_obj.fmax
 filenames = []
 index = 0
-for location_wave in ['P', 'S', 'all']:
-    if freq_min > 0 and freq_max > 0 and freq_min < freq_max or (freq_min == 0 and freq_max == 0):
-        if freq_min == fmin and freq_max == fmax or (
-                freq_min == 0 and freq_max == 0):  # parameters does not change the model frequency range
+for location_wave in ['P','S','all']:
+    if freq_min>0 and freq_max>0 and freq_min<freq_max or (freq_min==0 and freq_max==0):
+        if freq_min==fmin and freq_max==fmax or (freq_min==0 and freq_max==0):   # parameters does not change the model frequency range
             print('...Choosed frequency range is the same!...')
-            Green_list, shifts_list, hash_list, list_of_depths = get_model_data(bachata_obj, location_wave)
+            Green_list, shifts_list, hash_list, list_of_depths = get_model_data(bachata_obj,location_wave)
 
-        elif freq_min < fmin or freq_max > fmax:  # if new frequency range is out of model frequency range -> error
-            raise Exception(
-                f'ERROR! Check parameters <freq_min> and <freq_max>! They have to be in range [{fmin}, {fmax}]')
+        elif freq_min<fmin or freq_max>fmax:  # if new frequency range is out of model frequency range -> error
+            raise Exception(f'ERROR! Check parameters <freq_min> and <freq_max>! They have to be in range [{fmin}, {fmax}]')
 
         else:  # if new frequency range is correct -> extract model data without changing Bachata.hdf5
             print('......Change frequency range......')
             print(f'New frequency range: [{freq_min},{freq_max}]')
-            Green_list, shifts_list, hash_list, list_of_depths = get_model_data(bachata_obj, location_wave, freq_min,
-                                                                                freq_max)
+            Green_list, shifts_list, hash_list, list_of_depths = get_model_data(bachata_obj, location_wave, freq_min, freq_max)
             # change frequency range
             fmin = freq_min
             fmax = freq_max
-    elif freq_min > freq_max:  # incorrect data of new frequency range -> error
+    elif freq_min>freq_max:   # incorrect data of new frequency range -> error
         raise Exception('ERROR! Change parameters <freq_min> and <freq_max>!')
     filenames.append(f'Green_list_{location_wave}.pickle')
     filenames.append(f'list_of_depths_{location_wave}.pickle')
     filenames.append(f'shifts_list_{location_wave}.pickle')
     filenames.append(f'hash_list_{location_wave}.pickle')
-
+    
     print(f"Save model data in local directory wave:{location_wave}")
     with open(filenames[index], 'wb') as f:
         pickle.dump(Green_list, f)
-    index += 1
+    index +=1
     with open(filenames[index], 'wb') as f:
         pickle.dump(list_of_depths, f)
-    index += 1
+    index +=1
     with open(filenames[index], 'wb') as f:
         pickle.dump(shifts_list, f)
-    index += 1
+    index +=1
     with open(filenames[index], 'wb') as f:
         pickle.dump(hash_list, f)
-    index += 1
-    print(f"Successfully saved to local directory wave:{location_wave}")
+    index +=1
+    print(f"Successfully saved to local directory wave:{location_wave}")  
     print('Green data shape of 1 subModel: ', len(Green_list[0]))
     print('Shifts shape of 1 subModel: ', len(shifts_list[0]))
-    print('Type Green: ', type(Green_list[0][0][0, 0, 0]))
-    print('Type shifts: ', type(shifts_list[0][0][0, 0]))
+    print('Type Green: ', type(Green_list[0][0][0,0,0]))
+    print('Type shifts: ', type(shifts_list[0][0][0,0]))
 
 filenames.append(fpaths[0])
 
-
 # Download files to ftp
 def job_save_on_ftp(ftp, outdir, filename, save_in_subdirectories):
-    # change path to saving directory
+    #change path to saving directory
     try:
         ftp.cwd(outdir)
     except ftplib.error_perm as resp:
@@ -353,7 +275,7 @@ def job_save_on_ftp(ftp, outdir, filename, save_in_subdirectories):
     if save_in_subdirectories and ('subdirectory' in fields):
         mk_out_dir(ftp, fields['subdirectory'])
         ftp.cwd(fields['subdirectory'])
-
+    
     # Get all files and directories
     try:
         ldir = ftp.nlst()
@@ -362,17 +284,17 @@ def job_save_on_ftp(ftp, outdir, filename, save_in_subdirectories):
             print("No files in this directory")
         else:
             raise
-
+    
     fname = os.path.basename(filename)
-    # if fnmatch.fnmatch(filename, '*.segy'):   #To download specific files.
+    #if fnmatch.fnmatch(filename, '*.segy'):   #To download specific files.
     print("Saving... " + fname)
-
+        
     if not (fname in ldir):
         # Read file in binary mode
         with open(filename, "rb") as file:
             # Command for Uploading the file "STOR filename"
             ftp.storbinary(f"STOR {fname}", file)
-        print("{:.2f}".format(ftp.size(fname) / 1024 ** 2) + ' MB')
+        print("{:.2f}".format(ftp.size(fname)/1024**2)+' MB')
     else:
         if overwrite:
             print('The file with a given name already exists')
@@ -381,20 +303,20 @@ def job_save_on_ftp(ftp, outdir, filename, save_in_subdirectories):
             with open(filename, "rb") as file:
                 # Command for Uploading the file "STOR filename"
                 ftp.storbinary(f"STOR {fname}", file)
-            print("{:.2f}".format(ftp.size(fname) / 1024 ** 2) + ' MB')
+            print("{:.2f}".format(ftp.size(fname)/1024**2)+' MB')
         else:
             raise NameError('The file with a given name already exists')
-
+            
     if save_in_subdirectories and ('subdirectory' in fields):
         ftp.sendcmd('cdup')
     if ('unified_processing' in fields) and fields['unified_processing'] and ('day' in fields):
         ftp.sendcmd('cdup')
-
+    
     ftp.sendcmd('cdup')
-
 
 # make ouput directory on the ftp server
 def mk_out_dir(ftp, outname):
+    
     # Get all files and directories
     try:
         ldir = ftp.nlst()
@@ -403,25 +325,24 @@ def mk_out_dir(ftp, outname):
             print("No files in this directory")
         else:
             raise
-
-    # make dir for output files
+    
+    #make dir for output files
     if not (outname in ldir):
         ftp.mkd(outname)
     else:
         print('Warning: The directory with a given name already exists')
-    # out_name = os.path.join(folder, name + '.sac')
-    # print("Export " + name + "...")
+    #out_name = os.path.join(folder, name + '.sac')
+    #print("Export " + name + "...")
 
-
-# get current working data layer id
+#get current working data layer id
 def getdatalayer(server, project_id, dfnodes_id, package_id):
-    # nodes = server.get(f'/projects/{project_id}/nodes')
-    # dfnodes = pd.DataFrame(nodes)
-
+    #nodes = server.get(f'/projects/{project_id}/nodes')
+    #dfnodes = pd.DataFrame(nodes)
+    
     for i in dfnodes_id:
         url = f'https://ias.rndflow.com/api/projects/{project_id}/nodes/{i}/packages/{package_id}'
         try:
-            # res = srvr.get(f'/projects/{project_id}/nodes/{node["id"]}/packages/{pkg.id}')
+            #res = srvr.get(f'/projects/{project_id}/nodes/{node["id"]}/packages/{pkg.id}')
             res = requests.get(url, headers=server.access_header).json()
         except requests.exceptions.HTTPError:
             print('excepted')
@@ -430,22 +351,20 @@ def getdatalayer(server, project_id, dfnodes_id, package_id):
             if les > 1:
                 return res['data_layer_id'], i
 
-
 # get previous node id
 def getpreviousnode(server, project_id, node_id):
     dflinks = pd.DataFrame(server.get(f'/projects/{project_id}/links'))
-
-    return dflinks.at[dflinks.index[dflinks.dst_id.values == node_id][0], 'src_id']
-    # for link in links:
+    
+    return dflinks.at[dflinks.index[dflinks.dst_id.values == node_id][0],'src_id']
+    #for link in links:
     #    if link['dst_id'] == node_id:
     #        return link['src_id']
-
 
 if api_prefix is None:
     api_prefix = 'location'
 ftp = ftplib.FTP(ftp_address)
-ftp.login(job.secret(api_prefix + '_ftp_login'), job.secret(api_prefix + '_ftp_pw'))
-# ftp.login('data','94rfdkes')
+ftp.login(job.secret(api_prefix+'_ftp_login'),job.secret(api_prefix+'_ftp_pw'))
+#ftp.login('data','94rfdkes')
 
 # autoreplace backslashes
 ftp_dir = os.path.join(*ftp_dir.split('\\'))
@@ -454,49 +373,44 @@ if not (ftp_dir == ftp.pwd()):
     ftp.cwd(ftp_dir)
 
 if add_layer_to_outdir or add_previous_node:
-    srvr = server.Server(api_key=job.secret(api_prefix + '_token'))
-    project_id = job.secret(api_prefix + '_project')
-    # url = f'https://ias.rndflow.com/api/projects/{project_id}/data_layers/last'
-    # layer = requests.get(url)
-    # outdir = outdir+'_'+layer.json()['label']
-    # layer = srvr.get(f'/projects/{project_id}/data_layers/last')
-
+    srvr = server.Server(api_key=job.secret(api_prefix+'_token'))
+    project_id = job.secret(api_prefix+'_project')
+    #url = f'https://ias.rndflow.com/api/projects/{project_id}/data_layers/last'
+    #layer = requests.get(url)
+    #outdir = outdir+'_'+layer.json()['label']
+    #layer = srvr.get(f'/projects/{project_id}/data_layers/last')
+    
     nodes = srvr.get(f'/projects/{project_id}/nodes')
     dfnodes = pd.DataFrame(nodes).set_index('id')
-    # dfsave = dfnodes[dfnodes.label.str.contains('save_on_ftp')]
+    #dfsave = dfnodes[dfnodes.label.str.contains('save_on_ftp')]
     layer_id, node_id = getdatalayer(srvr, project_id, dfnodes.index, pkg.id)
-
+    
     if add_layer_to_outdir:
         layer = srvr.get(f'/projects/{project_id}/data_layers/{layer_id}')
         outdir = layer['label'] + '_' + outdir
-
+        
     if add_previous_node:
         pre_node_id = getpreviousnode(srvr, project_id, node_id)
-        # pre_node = dfnodes[dfnodes.index == pre_node_id].to_dict('records')[0]
-        # pre_node=srvr.get(f'/projects/{project_id}/nodes/{pre_node_id}')
-        outdir = outdir + '_' + dfnodes.at[pre_node_id, 'label']
-outdir = outdir + '_' + pkg.label
+        #pre_node = dfnodes[dfnodes.index == pre_node_id].to_dict('records')[0]
+        #pre_node=srvr.get(f'/projects/{project_id}/nodes/{pre_node_id}')
+        outdir =  outdir + '_' + dfnodes.at[pre_node_id,'label']
+outdir = outdir +'_'+ pkg.label 
 mk_out_dir(ftp, outdir)
 print("Save in ftp")
 for fi in filenames:
     job_save_on_ftp(ftp, outdir, fi, save_in_subdirectories)
 
 ftp.close()
-fields.update({"save_model_date": ftp_dir + "\\" + outdir})
-fields.update({"save_model_date_main_directory": ftp_dir})
-fields.update({"save_model_date_local_directory": outdir})
+fields.update({"save_model_date":ftp_dir+"\\"+outdir})
+fields.update({"save_model_date_main_directory":ftp_dir})
+fields.update({"save_model_date_local_directory":outdir})
 new_filename = fpaths[0]
-path = job.save_package(label="model_data_" + pkg.label,
-                        fields=fields)  # files = {'Bachata.hdf5': lambda f: shutil.copy2(new_filename, f.parent)}
-
-
+path = job.save_package(label = "model_data_" + pkg.label,fields = fields)#files = {'Bachata.hdf5': lambda f: shutil.copy2(new_filename, f.parent)}
 def delete_files_with_extension(directory, extension):
     for filename in os.listdir(directory):
         if filename.endswith(extension):
             os.remove(os.path.join(directory, filename))
-
-
 current_directory = os.getcwd()
-print("Current directory:", current_directory)
+print("Current directory:",current_directory)
 
 delete_files_with_extension(current_directory, '.pickle')
