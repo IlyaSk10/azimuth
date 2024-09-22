@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 import sys
 import os
 import ftplib
@@ -81,6 +80,7 @@ from obspy.io.segy.core import _read_segy
 import numpy as np
 import sys
 import h5py
+import re
 
 well=413
 dir_name = '413_S'
@@ -112,9 +112,8 @@ for submodel in submodels_name: # exclude
     except FileExistsError:
         pass
 
-    #model_centralZ = f[submodel]['central_Z'][:].item()
-    #model_field = f[submodel]['field'][:]
     model_sensors = f[submodel]['sensors'][:] # exclude
+    num_submodel = int(re.findall(r'\d+',submodel)[0])
 
     data = np.zeros((len(model_sensors), 12, 6, L))  # shape (sensors,12,6,L)
 
@@ -143,8 +142,8 @@ for submodel in submodels_name: # exclude
                 stream.stats.binary_file_header = SEGYBinaryFileHeader()
                 stream.stats.binary_file_header.job_identification_number = well
                 stream.stats.binary_file_header.line_number = well
-                stream.stats.binary_file_header.reel_number = 0
-                stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0
+                stream.stats.binary_file_header.reel_number = 0 
+                #stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0 
                 stream.stats.binary_file_header.data_sample_format_code = 1 #5
                 stream.stats.binary_file_header.trace_sorting_code = 1
                 stream.stats.binary_file_header.vertical_sum_code = 0
@@ -156,7 +155,6 @@ for submodel in submodels_name: # exclude
                 stream.stats.binary_file_header.fixed_length_trace_flag = 1 
                 stream.stats.binary_file_header.number_of_samples_per_data_trace = L
                 stream.stats.binary_file_header.seg_y_format_revision_number = 0x0100
-                stream.stats.binary_file_header.sample_interval_in_microseconds = 0.0
                 stream.stats.binary_file_header.ensemble_fold = 0
 
                 trace = Trace(data[s, p, comp, :])
@@ -172,22 +170,23 @@ for submodel in submodels_name: # exclude
                 h.trace_sequence_number_within_segy_file = comp+1
                 h.original_field_record_number = 1
                 h.trace_number_within_the_original_field_record = comp+1
-                h.receiver_group_elevation = int(file_sensors[int(sens)-1,1])
-                h.surface_elevation_at_source = int(file_sensors[int(sens)-1,1])
+                h.receiver_group_elevation = int(file_sensors[int(sens)-1,1]) # глубина по стволу (MD) датчика приема #+
+                h.surface_elevation_at_source = int(file_sensors[num_submodel-1,1])
                 h.trace_sequence_number_within_segy_file = comp+1
                 h.trace_identification_code = 1
                 h.data_use = 1
                 h.source_depth_below_surface = 0
                 h.distance_from_center_of_the_source_point_to_the_center_of_the_receiver_group = dist_sr[p]
                 h.source_type_orientation = 0
-                h.energy_source_point_number = int(sens)
+                h.energy_source_point_number = num_submodel #
                 h.datum_elevation_at_receiver_group = 6370
                 h.datum_elevation_at_source = 6370
                 h.scalar_to_be_applied_to_all_elevations_and_depths = -100
-                h.source_coordinate_x = int(file_sensors[int(sens)-1,2]*100) # longtitude *100 
-                h.source_coordinate_y = int(file_sensors[int(sens)-1,3]*100)
-                h.group_coordinate_x = int(file_sensors[int(sens)-1,2]*100)
-                h.group_coordinate_y = int(file_sensors[int(sens)-1,3]*100)
+                h.scalar_to_be_applied_to_all_coordinates = -100
+                h.source_coordinate_x = round(file_sensors[num_submodel-1,4]*100) # longtitude *100 
+                h.source_coordinate_y = round(file_sensors[num_submodel-1,5]*100)
+                h.group_coordinate_x = round(file_sensors[int(sens)-1,4]*100) # coord x датчика приема
+                h.group_coordinate_y = round(file_sensors[int(sens)-1,5]*100) # coord y датчика приема
                 h.coordinate_units = 1
                 h.delay_recording_time = 0
                 h.number_of_samples_in_this_trace = L
@@ -204,6 +203,20 @@ for submodel in submodels_name: # exclude
                 int(sens)) + '_source_num_' + str(p) + '.segy'
             stream.write(path_to_segy, format="SEGY") # , data_encoding=5
 # -
+
+(212100+131760+104232+66612)*27
+
+
+
+f[submodel]['sensors'][:].shape
+
+# +
+#996	197835	1592.67	1528.97	668765.07	5867281.35
+#1046	207939	1659.85	1596.15	668827.12	5867238.39
+# -
+
+print(submodel,num_submodel,int(file_sensors[num_submodel-1,1]),round(file_sensors[num_submodel-1,4]*100),int(file_sensors[num_submodel-1,5]*100))
+print(sens,int(file_sensors[int(sens)-1,1]),int(file_sensors[int(sens)-1,4]*100),int(file_sensors[int(sens)-1,5]*100))
 
 import shutil
 shutil.make_archive('413_S', 'zip', '413_S')
