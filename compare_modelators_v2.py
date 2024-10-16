@@ -119,6 +119,64 @@ for i in range(property_data.shape[0]):
     vs.append(np.sqrt(np.mean(youn_mod)/(2*np.mean(density)*(np.mean(puas_mod)+1))))
 
 vp,vs=np.mean(vp),np.mean(vs)
+# +
+#all_props=property_data[np.where((property_data[:,0]==0) & (property_data[:,1]==0))[0],:]
+
+# +
+# for i in range(50):
+#     print(i,property_data[i,0],property_data[i,1],property_data[i,3],property_data[i,4],property_data[i,6],property_data[i,7],property_data[i,8])
+#     #print('\n')
+
+# +
+# vp,vs=[],[]
+# for i in range(property_data.shape[0]):
+#     youn_mod=property_data[i,6]
+#     puas_mod=property_data[i,7]
+#     density=property_data[i,8]
+#     vp.append(((np.mean(density)/(1.741*1000))**4)*1000)
+#     vs.append(np.sqrt(np.mean(youn_mod)/(2*np.mean(density)*(np.mean(puas_mod)+1))))
+
+# vp,vs=np.mean(vp),np.mean(vs)
+
+# +
+num_cells_to_source = np.ceil(sources_coords[0,2]/cellsize).astype(int)
+
+total_num_cells=0
+delta_h=property_data[0,5]-property_data[0,2]
+i=0
+tp_sum=0
+ts_sum=0
+
+while (num_cells_to_source-total_num_cells)>delta_h:
+
+    youn_mod=property_data[i,6]
+    puas_mod=property_data[i,7]
+    density=property_data[i,8]
+    vp=((np.mean(density)/(1.741*1000))**4)*1000
+    vs=np.sqrt(np.mean(youn_mod)/(2*np.mean(density)*(np.mean(puas_mod)+1)))
+
+    tp_sum=tp_sum+(delta_h*cellsize)/vp
+    ts_sum=ts_sum+(delta_h*cellsize)/vs
+
+    total_num_cells=total_num_cells+delta_h
+    i=i+1
+    delta_h=property_data[i,5]-property_data[i,2]
+
+
+print(num_cells_to_source,total_num_cells,delta_h)
+
+
+youn_mod=property_data[i,6]
+puas_mod=property_data[i,7]
+density=property_data[i,8]
+vp=((np.mean(density)/(1.741*1000))**4)*1000
+vs=np.sqrt(np.mean(youn_mod)/(2*np.mean(density)*(np.mean(puas_mod)+1)))
+
+tp_sum=tp_sum+((num_cells_to_source-total_num_cells)*cellsize)/vp
+ts_sum=ts_sum+((num_cells_to_source-total_num_cells)*cellsize)/vs
+
+vp,vs=sources_coords[0,2]/tp_sum,sources_coords[0,2]/ts_sum
+print(vp,vs,vp/vs)
 
 # +
 # youn_mod=5042449033
