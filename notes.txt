@@ -1,0 +1,33 @@
+@property
+def newton_power(self):
+	return self.get_parameter(self.filename, 'newton_power')
+
+@newton_power.setter
+def newton_power(self, value):
+	self.set_parameter(self.filename, 'newton_power', value)
+	
+	
+import h5py
+
+h5py.File().keys()
+
+print(bachata_obj.newton_power,bachata_obj.mult_degree,bachata_obj.grid_step)
+
+
+bachata_obj.grid_step=grid_step
+bachata_obj.mult_degree=np.array([10**power])
+bachata_obj.newton_power=[pac.get('newton_power')]
+
+
+bachata_obj.grid_step=grid_step
+bachata_obj.mult_degree=mult_degree
+bachata_obj.newton_power=newton_power
+
+Input
+print(grid_step,np.array([10**power]),[pac.get('newton_power')])
+# [20 20 20] [100000000000] [10000]
+
+Write
+[grid_step]*3
+np.array([mult_degree])
+[newton_power]
