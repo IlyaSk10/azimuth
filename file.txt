@@ -1,3 +1,1 @@
-text_
-uuu
-1
+eureka
