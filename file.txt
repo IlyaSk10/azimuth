@@ -1,1 +1,1 @@
-eureka
+https://skillbox.ru/media/code/lokalnoe-khranilishche-git-kak-rabotat-s-git-stash/
