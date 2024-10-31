@@ -1,4 +1,3 @@
 https://skillbox.ru/media/code/lokalnoe-khranilishche-git-kak-rabotat-s-git-stash/
 111
 eureka
-3333
