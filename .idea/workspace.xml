@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="55eb3e01-e563-47df-8dc5-6d5466be8081" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/file.txt" beforeDir="false" afterPath="$PROJECT_DIR$/file.txt" afterDir="false" />
-    </list>
+    <list default="true" id="55eb3e01-e563-47df-8dc5-6d5466be8081" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,22 +211,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="178" key="#Notifications/0.0.1920.1040@0.0.1920.1040" timestamp="1729107600215" />
-    <state x="45" y="174" width="1736" height="856" key="DiffContextDialog" timestamp="1730046305733">
+    <state x="45" y="174" width="1736" height="856" key="DiffContextDialog" timestamp="1730383077552">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="45" y="174" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730046305733" />
+    <state x="45" y="174" width="1736" height="856" key="DiffContextDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730383077552" />
     <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1729183931538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1729183931538" />
-    <state x="27" y="98" key="MergeDialog" timestamp="1730052128947">
+    <state x="90" y="132" key="MergeDialog" timestamp="1730383092700">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="27" y="98" key="MergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730052128947" />
-    <state x="515" y="248" key="MultipleFileMergeDialog" timestamp="1730052128950">
+    <state x="90" y="132" key="MergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730383092700" />
+    <state x="515" y="248" key="MultipleFileMergeDialog" timestamp="1730383092704">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="515" y="248" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730052128950" />
+    <state x="515" y="248" key="MultipleFileMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1730383092704" />
     <state x="92" y="92" width="1736" height="856" key="ShowDiffWithBranchDialog" timestamp="1729104591775">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
